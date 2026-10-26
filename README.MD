@@ -70,3 +70,41 @@ In REST, a URL identifies a resource. The `id` is part of the identity of one sp
 
 **What information should an error response contain?**
 A stable, machine-readable `error` code (so clients can branch on it) and a human-readable `message`. It must not expose stack traces or internal details. The HTTP status code carries the category of failure; the body gives the specific reason.
+
+## 3. Part I — Plain Java Application
+
+The application logic is a plain Java 17 library. It has **no dependency** on HTTP,
+API Gateway, Spring Boot, a web server or any AWS class. Its only dependency is JUnit,
+and only in the `test` scope.
+
+### Structure
+
+orders-api/
+├── pom.xml
+└── src/
+    ├── main/java/edu/eci/tdse/orders/
+    │   ├── model/
+    │   │   ├── Order.java
+    │   │   └── CreateOrderRequest.java
+    │   ├── exception/
+    │   │   ├── OrderNotFoundException.java
+    │   │   └── InvalidOrderException.java
+    │   └── service/
+    │       └── OrderService.java
+    └── test/java/edu/eci/tdse/orders/service/
+        └── OrderServiceTest.java
+
+### Design decisions
+
+- **Domain exceptions instead of status codes.** The service signals problems with
+  `OrderNotFoundException` and `InvalidOrderException`. It never knows what a "404" is.
+  Translating exceptions to HTTP is the job of an outer layer (API Gateway or the adapter).
+- **Validation lives in the application logic.** Rules such as "quantity must be positive"
+  are business rules, so they must hold regardless of how the service is invoked
+  (Lambda direct, API Gateway, a unit test).
+- **JavaBean-style model classes** (public no-arg constructor, getters and setters). This
+  lets the AWS Lambda Java runtime convert JSON to objects and back in Part II without
+  adding any AWS dependency to the model.
+- **In-memory storage.** Orders are kept in a `ConcurrentHashMap`. This is *not*
+  persistent: Lambda execution environments are ephemeral, so data may disappear
+  whenever the environment is recycled.
