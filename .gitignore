@@ -34,3 +34,10 @@ buildNumber.properties
 # --- Sistema operativo ---
 .DS_Store
 Thumbs.db
+
+# --- VS Code & Metals ---
+.vscode/
+.metals/
+.bloop/
+project/project/
+project/target/

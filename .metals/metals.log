@@ -403,3 +403,142 @@ INFORMACIÓN: Unsupported notification method: $/setTrace
 2026.10.27 22:52:39 INFO  Shutting down server
 2026.10.27 22:52:39 INFO  Memory monitor stopped
 2026.10.27 22:52:39 INFO  shutting down Metals
+2026.10.28 17:40:59 INFO  Started: Metals version 1.6.9 in folders 'C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws' for client Visual Studio Code 1.143.1.
+2026.10.28 17:40:59 INFO  Memory monitor started
+2026.10.28 17:41:08 WARN  Using H2 2.5.250 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.10.28 17:41:10 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+oct 28, 2026 5:41:12 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 2
+2026.10.28 17:41:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 5
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 3
+2026.10.28 17:41:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 4
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 1
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 7
+oct 28, 2026 5:41:13 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 6
+2026.10.28 17:41:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:41:24 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:41:27 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:42:57 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:42:58 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:42:58 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:42:58 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:00 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:00 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:00 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:05 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:05 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:05 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java. Using fallback presentation compiler.
+2026.10.28 17:43:06 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\Order.java
+2026.10.28 17:43:06 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/model/Order.java. Output:
+
+2026.10.28 17:43:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+oct 28, 2026 5:43:07 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 42
+2026.10.28 17:43:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:09 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:09 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:09 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:09 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java. Using fallback presentation compiler.
+2026.10.28 17:43:11 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\model\CreateOrderRequest.java
+2026.10.28 17:43:11 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/model/CreateOrderRequest.java. Output:
+
+2026.10.28 17:43:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:13 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:13 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:13 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:14 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:14 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:14 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:14 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java. Using fallback presentation compiler.
+2026.10.28 17:43:15 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\OrderNotFoundException.java
+2026.10.28 17:43:15 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/exception/OrderNotFoundException.java. Output:
+
+2026.10.28 17:43:16 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:16 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:16 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:16 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:17 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:17 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:17 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:17 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:17 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:18 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/exception/InvalidOrderException.java. Output:
+
+2026.10.28 17:43:18 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:18 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:18 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:18 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:18 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:19 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:19 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:43:20 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java
+2026.10.28 17:43:20 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/exception/InvalidOrderException.java. Output:
+
+2026.10.28 17:43:22 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\exception\InvalidOrderException.java. Using fallback presentation compiler.
+2026.10.28 17:44:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:08 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:11 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:44:12 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java
+2026.10.28 17:44:12 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/OrderService.java. Output:
+
+2026.10.28 17:44:12 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+oct 28, 2026 5:45:19 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFORMACIÓN: Unsupported notification method: $/setTrace
+2026.10.28 17:49:44 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:49:44 INFO  no build target found for c:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:49:44 INFO  no build target found for c:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:49:45 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java
+2026.10.28 17:49:45 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\service\OrderService.java
+2026.10.28 17:49:45 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/test/java/edu/eci/tdse/orders/AppTest.java. Output:
+
+2026.10.28 17:49:45 WARN  Running javac-semanticdb failed for file:///C:/Users/nikot/OneDrive/Universidad/10.%20Decimo%20semestre/TDSE/9.serverless-api-with-aws/orders-api/src/main/java/edu/eci/tdse/orders/service/OrderService.java. Output:
+
+2026.10.28 17:49:45 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\service\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:49:45 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\service\OrderService.java. Using fallback presentation compiler.
+oct 28, 2026 5:49:46 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 135
+2026.10.28 17:49:45 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\main\java\edu\eci\tdse\orders\service\OrderService.java. Using fallback presentation compiler.
+2026.10.28 17:50:19 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:19 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java
+2026.10.28 17:50:19 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:19 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:24 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:38 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:38 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:38 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:40 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:40 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:55 INFO  no build target found for c:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\AppTest.java. Using fallback presentation compiler.
+2026.10.28 17:50:55 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\OrderServiceTest.java. Using fallback presentation compiler.
+oct 28, 2026 5:50:55 P. M. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTENCIA: Unmatched cancel notification for request id 158
+2026.10.28 17:52:07 INFO  no build target found for C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\OrderServiceTest.java. Using fallback presentation compiler.
+2026.10.28 17:52:07 WARN  no build target for: C:\Users\nikot\OneDrive\Universidad\10. Decimo semestre\TDSE\9.serverless-api-with-aws\orders-api\src\test\java\edu\eci\tdse\orders\OrderServiceTest.java

@@ -108,3 +108,74 @@ orders-api/
 - **In-memory storage.** Orders are kept in a `ConcurrentHashMap`. This is *not*
   persistent: Lambda execution environments are ephemeral, so data may disappear
   whenever the environment is recycled.
+
+### Checkpoint 1
+
+**Can the application functionality be tested without AWS?**
+Yes. `OrderServiceTest` instantiates `OrderService` directly and runs with `mvn test`.
+No AWS account, network access or emulator is needed.
+
+**Does your application require a web server?**
+No. The service is a plain Java class with methods. Nothing listens on a port.
+
+**Does it require Spring Boot?**
+No. The only dependency is JUnit, restricted to the `test` scope.
+
+**What does the generated JAR contain?**
+The compiled `.class` files of the model, exceptions and service, plus
+`META-INF/MANIFEST.MF` and the Maven metadata. It contains neither the test classes nor
+any third-party library, so it is small and has no transitive dependencies.
+
+**Which parts of your application currently know about HTTP?**
+None. The application only knows about orders, customers, products, quantities and
+domain exceptions. Status codes and headers will be introduced later, outside this layer.
+
+## 4. Part II — Deploying a Java Function to AWS Lambda
+
+`OrderService.createOrder` is deployed as an AWS Lambda function **without modifying
+any Java code**. The Lambda Java runtime accepts a plain public method as handler
+(`package.Class::method`), so no AWS dependency was added to the project.
+
+| Setting | Value |
+|---|---|
+| Function name | `orders-create` |
+| Runtime | Java 17 |
+| Handler | `edu.eci.tdse.orders.service.OrderService::createOrder` |
+| Package | `target/orders-api-1.0.0.jar` |
+| Memory / Timeout | 512 MB / 15 s |
+
+### Investigation: JSON ↔ Java conversion in the Lambda Java runtime
+
+The Lambda Java runtime inspects the handler method signature through reflection,
+deserializes the incoming JSON into the declared parameter type (`CreateOrderRequest`)
+using Jackson, invokes the method, and serializes the returned object (`Order`) back to JSON
+through its getters. JSON property names therefore come from JavaBean accessors, which is
+why the model classes have a public no-arg constructor and getters/setters.
+
+### Verification against the deployed function
+
+**Valid order** (`quantity: 1`)
+![Valid order](docs/images/1.1.lambda-test.png)
+The runtime deserialized the JSON into `CreateOrderRequest`, our method ran, and the returned `Order` was serialized back to JSON.
+
+**Domain error** (`quantity: 0`)
+![Zero quantity](docs/images/1.2.lambda-test-fail-quantity.png)
+`errorType` is our own `InvalidOrderException`: our code ran and the domain exception crossed the runtime.
+
+**Missing field** (`product` omitted)
+![Missing field](docs/images/1.3.lambda-test-fail-product.png)
+The error comes from the runtime's JSON conversion, *before* our method was invoked.
+
+**Type mismatch** (`quantity: "abc"`)
+![Bad type](docs/images/1.4.lambda-test-fail-bad-type.png)
+The error comes from the runtime's JSON conversion, *before* our method was invoked.
+
+### Checkpoint 2 — Architecture of Part II
+
+```mermaid
+flowchart TD
+    A["JSON event"] --> B["AWS Lambda Java runtime<br/>(AWS-specific)"]
+    B -->|"Jackson: JSON → CreateOrderRequest"| C["OrderService.createOrder<br/>(plain Java)"]
+    C -->|"returns Order"| B
+    B -->|"Jackson: Order → JSON"| D["JSON response"]
+```
