@@ -1,4 +1,4 @@
-package main.java.edu.eci.tdse.orders.model;
+package edu.eci.tdse.orders.model;
 
 public class CreateOrderRequest {
 

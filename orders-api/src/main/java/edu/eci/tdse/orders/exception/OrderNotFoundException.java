@@ -1,4 +1,4 @@
-package main.java.edu.eci.tdse.orders.exception;
+package edu.eci.tdse.orders.exception;
 
 public class OrderNotFoundException extends RuntimeException {
 

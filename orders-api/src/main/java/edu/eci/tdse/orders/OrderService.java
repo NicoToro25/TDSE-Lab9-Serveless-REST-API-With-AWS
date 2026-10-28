@@ -1,4 +1,4 @@
-package edu.eci.tdse.orders.service;
+package edu.eci.tdse.orders;
 
 import edu.eci.tdse.orders.exception.InvalidOrderException;
 import edu.eci.tdse.orders.exception.OrderNotFoundException;
