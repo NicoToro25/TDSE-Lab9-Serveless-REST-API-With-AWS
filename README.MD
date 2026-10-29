@@ -686,3 +686,6 @@ sections, and grant API Gateway permission to invoke the function.
 **Architecture A** (mapping templates) uses three functions with handlers
 `OrderService::createOrder`, `::getOrder` and `::getOrdersByCustomer`; the templates and
 response mappings are described in section 5 and in its OpenAPI export.
+
+## Video demonstration
+![Video Demo](docs/video/demonstration-video.mp4)
