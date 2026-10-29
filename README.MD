@@ -179,3 +179,88 @@ flowchart TD
     C -->|"returns Order"| B
     B -->|"Jackson: Order → JSON"| D["JSON response"]
 ```
+## 5. Parts III & IV — Architecture A: API Gateway Mapping Templates (non-proxy)
+
+A **REST API** (not an HTTP API, which cannot apply mapping templates) exposes the
+application with **Lambda custom (non-proxy) integration**. The Java code is unchanged.
+
+| HTTP operation | Lambda function | Handler | Payload built by API Gateway |
+|---|---|---|---|
+| `POST /orders` | `orders-create` | `OrderService::createOrder` | the request body, unchanged |
+| `GET /orders/{id}` | `orders-get` | `OrderService::getOrder` | a JSON string with the path parameter |
+| `GET /orders?customerId=` | `orders-search` | `OrderService::getOrdersByCustomer` | a JSON string with the query parameter |
+
+### Design decisions
+- **Payload as a plain JSON string for single-value inputs.** `{id}` is converted to
+  `"ORD-42"`, which the Lambda runtime deserializes to a `String`. This avoids creating
+  request classes that would exist only because of the infrastructure.
+- **One Lambda per operation, same JAR.** API Gateway already does the routing, and each
+  function has exactly one handler.
+- **Validation stays in the application.** API Gateway does not validate; a missing
+  `customerId` reaches the Java code as `""` and is rejected there.
+- **Consequence:** each function has its own execution environment and its own in-memory
+  `OrderService`. An order created through `POST /orders` is **not** visible to
+  `GET /orders/{id}`. Pre-loaded orders (`ORD-001`, `ORD-42`) are used for read demos.
+- `$util.escapeJavaScript` is applied to client-controlled values to prevent breaking
+  the JSON built by the template (template injection).
+
+### Checkpoint 3 — Responsibilities of API Gateway in Architecture A
+API Gateway is currently responsible for:
+- **Routing:** matching method + path to the right Lambda function.
+- **Extracting path and query parameters** (`$input.params`).
+- **Transforming requests:** building the JSON each Lambda expects, including escaping.
+- **Transforming responses:** shaping the error documents.
+- **Choosing HTTP status codes:** 200/201/400/404/500, through regex-based integration responses.
+- **Mapping errors:** translating Lambda errors into the contract's JSON error format.
+
+**Advantages**
+- The Java code has **no HTTP knowledge at all** and no AWS dependency; it can be tested
+  and reused as is.
+- Little Java infrastructure code to write and maintain.
+- Handlers are trivial: each Lambda is one plain method.
+
+**Disadvantages**
+- **Error mapping depends on regular expressions over human-readable messages.**
+  Rewording an exception message can silently turn a 404 into a 500. The coupling between
+  the Java code and the API Gateway configuration is real, but implicit and untested.
+- **Logic lives in configuration** (VTL templates, regex) that is hard to unit test locally,
+  hard to review in a pull request, and verbose to reproduce.
+- **Configuration grows with every operation:** each method needs its own templates,
+  method responses and integration responses.
+- Some behavior is awkward or impossible, e.g. the `Location` header on `201`.
+- Unmapped errors can leak or be mislabeled (e.g. JSON-conversion failures become 500
+  unless explicitly mapped).
+- Per-operation Lambdas with in-memory state do not share data.
+
+### Evidence — Architecture A
+
+#### Part III: extracting `{id}` and transforming the request
+
+**API structure**
+![Resources tree](docs/images/2.6.resorce-tree.png)
+Two resources (`/orders` and `/orders/{id}`) with their methods. The `{id}` braces declare a path parameter.
+
+**Where status codes are defined**
+![Integration responses](docs/images/2.3.api-gateway-get-id-respuestas-integracion1.png)
+![Integration responses](docs/images/2.3.api-gateway-get-id-respuestas-integracion2.png)
+Status codes live in API Gateway's *Integration responses*, selected by a regular expression matched against the Lambda `errorMessage`. The specific patterns (404, 400) took precedence over the catch-all `(\n|.)+` (500), as the results below show.
+
+**Successful retrieval — `200 OK`**
+![GET 200](docs/images/2.1.api-gateway-get-id-test-200.png)
+Existing order, returned as JSON.
+
+**Order not found — `404 Not Found`**
+![GET 404](docs/images/2.2.api-gateway-get-id-test-404.png)
+The domain exception `OrderNotFoundException` became a 404 with the contract's error document, built by a response template.
+
+**Creation — `201 Created`**
+![POST 201](docs/images/2.4.api-gateway-post.png)
+The default integration response was remapped from 200 to 201.
+
+
+**Evidence of API working on URLs:**
+
+![URL test](docs/images/2.5.api-gateway-url1.png)
+![URL test](docs/images/2.5.api-gateway-url2.png)
+
+
