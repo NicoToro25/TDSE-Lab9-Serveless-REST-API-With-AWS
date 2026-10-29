@@ -1,0 +1,206 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "orders-api",
+    "version" : "2026-10-29T01:59:23Z"
+  },
+  "servers" : [ {
+    "url" : "https://kycm73mdcf.execute-api.us-east-1.amazonaws.com/{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : "dev"
+      }
+    }
+  } ],
+  "paths" : {
+    "/orders" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "customerId",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "400 response",
+            "content" : { }
+          },
+          "500" : {
+            "description" : "500 response",
+            "content" : { }
+          },
+          "200" : {
+            "description" : "200 response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:078594814576:function:orders-search/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "(\\n|.)+" : {
+              "statusCode" : "500",
+              "responseTemplates" : {
+                "application/json" : "  {\r\n    \"error\": \"INTERNAL_ERROR\",\r\n    \"message\": \"Unexpected error\"\r\n  }"
+              }
+            },
+            "default" : {
+              "statusCode" : "200"
+            },
+            ".*(must not be blank|must be greater than 0|must not be null).*" : {
+              "statusCode" : "400"
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "\"$util.escapeJavaScript($input.params('customerId'))\""
+          },
+          "passthroughBehavior" : "when_no_match",
+          "timeoutInMillis" : 29000,
+          "contentHandling" : "CONVERT_TO_TEXT",
+          "type" : "aws"
+        }
+      },
+      "post" : {
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Empty"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "201 response",
+            "content" : { }
+          },
+          "400" : {
+            "description" : "400 response",
+            "content" : { }
+          },
+          "500" : {
+            "description" : "500 response",
+            "content" : { }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:078594814576:function:orders-create/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "(\\n|.)+" : {
+              "statusCode" : "500",
+              "responseTemplates" : {
+                "application/json" : "  {\r\n    \"error\": \"INTERNAL_ERROR\",\r\n    \"message\": \"Unexpected error\"\r\n  }"
+              }
+            },
+            "default" : {
+              "statusCode" : "201"
+            },
+            ".*(must not be blank|must be greater than 0|must not be null).*" : {
+              "statusCode" : "400",
+              "responseTemplates" : {
+                "application/json" : "  {\r\n    \"error\": \"INVALID_REQUEST\",\r\n    \"message\": $input.json('$.errorMessage')\r\n  }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "$input.json('$')"
+          },
+          "passthroughBehavior" : "when_no_match",
+          "timeoutInMillis" : 29000,
+          "contentHandling" : "CONVERT_TO_TEXT",
+          "type" : "aws"
+        }
+      }
+    },
+    "/orders/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404 response",
+            "content" : { }
+          },
+          "200" : {
+            "description" : "200 response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Empty"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400 response",
+            "content" : { }
+          },
+          "500" : {
+            "description" : "500 response",
+            "content" : { }
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:078594814576:function:orders-get/invocations",
+          "httpMethod" : "POST",
+          "responses" : {
+            "(\\n|.)+" : {
+              "statusCode" : "500",
+              "responseTemplates" : {
+                "application/json" : "  {\r\n    \"error\": \"INTERNAL_ERROR\",\r\n    \"message\": \"Unexpected error\"\r\n  }"
+              }
+            },
+            "default" : {
+              "statusCode" : "200"
+            },
+            ".*does not exist.*" : {
+              "statusCode" : "404",
+              "responseTemplates" : {
+                "application/json" : "     {\r\n       \"error\": \"ORDER_NOT_FOUND\",\r\n       \"message\": $input.json('$.errorMessage')\r\n     }"
+              }
+            },
+            ".*(must not be blank|must be greater than 0|must not be null).*" : {
+              "statusCode" : "400",
+              "responseTemplates" : {
+                "application/json" : "  {\r\n    \"error\": \"INVALID_REQUEST\",\r\n    \"message\": $input.json('$.errorMessage')\r\n  }"
+              }
+            }
+          },
+          "requestTemplates" : {
+            "application/json" : "\"$util.escapeJavaScript($input.params('id'))\""
+          },
+          "passthroughBehavior" : "when_no_match",
+          "timeoutInMillis" : 29000,
+          "contentHandling" : "CONVERT_TO_TEXT",
+          "type" : "aws"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Empty" : {
+        "title" : "Empty Schema",
+        "type" : "object"
+      }
+    }
+  },
+  "x-amazon-apigateway-security-policy" : "TLS_1_0"
+}

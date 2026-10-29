@@ -263,4 +263,141 @@ The default integration response was remapped from 200 to 201.
 ![URL test](docs/images/2.5.api-gateway-url1.png)
 ![URL test](docs/images/2.5.api-gateway-url2.png)
 
+**Reproducibility:** the API was exported as OpenAPI with API Gateway extensions:
+[`docs/api-gateway/architecture-a-openapi.json`](docs/api-gateway/architecture-a-openapi.json).
+
+## 6. Part V — Lambda Proxy Integration
+
+### The event sent by API Gateway
+A throwaway echo Lambda was attached to a temporary resource to capture real events.
+Examples are stored in `docs/examples/` (`proxy-event-get.json`, `proxy-event-post.json`;
+IP addresses masked).
+
+| Information | Location in the event |
+|---|---|
+| HTTP method | `httpMethod` |
+| Path | `path` (actual) and `resource` (template, e.g. `/orders/{id}`) |
+| Path parameters | `pathParameters` (`null` if none) |
+| Query parameters | `queryStringParameters` (`null`, not `{}`, when absent) |
+| Headers | `headers` / `multiValueHeaders` |
+| Body | `body` — a **string** holding escaped JSON, plus `isBase64Encoded` |
+
+Key consequences: the body must be parsed by our code, and absent maps are `null`.
+
+## 7. Part VI — HTTP Adapter
+
+`OrdersApiHandler` (package `edu.eci.tdse.orders.lambda`) is a thin adapter. It is the only
+class that knows about API Gateway events, status codes, headers and JSON serialization.
+`OrderService`, the model and the exceptions were **not modified** and still have no AWS or
+Gson dependency.
+
+- **One Lambda for the whole API.** The adapter routes on `httpMethod` + `resource`.
+- **Single translation table** from domain exceptions to HTTP:
+  `OrderNotFoundException → 404`, `InvalidOrderException → 400`,
+  malformed JSON → 400, anything else → 500 with a generic message
+  (details go to CloudWatch Logs, never to the client).
+- **Errors are normal return values.** The Lambda invocation succeeds and returns
+  `statusCode: 404`; no `errorType`/`errorMessage` and no regular expressions are involved.
+- **`Location` header** on `201`, built from `requestContext.path` so that it includes the stage.
+- **Locally testable:** `OrdersApiHandlerTest` builds `APIGatewayProxyRequestEvent` objects
+  and verifies every HTTP behavior with `mvn test`, without AWS.
+
+> Update to Checkpoint 1: the packaged JAR now also contains the adapter and its
+> libraries (AWS events, Gson). The application classes themselves remain free of them.
+
+### Evidence — Architecture B
+
+**Direct invocation with a proxy event**
+![Direct 200](docs/images/3.2.lambda-proxy-test1.png)
+The Lambda returns an HTTP-shaped object: `statusCode`, `headers` and a string `body`.
+
+**Error as a return value**
+![Direct 404](docs/images/3.2.lambda-proxy-test2.png)
+A missing order is a successful invocation returning `statusCode: 404`.
+
+**Proxy method configuration**
+  ![Proxy method](docs/images/3.3.lambda-proxy-method-config.png)
+With Lambda proxy integration there are no mapping templates nor method/integration responses to configure.
+
+**Deployed API calls** (`201` with `Location`, `404`, `400`, search...)
+![Results](docs/images/3.3.lambda-proxy-200.png)
+![Results](docs/images/3.3.lambda-proxy-404.png)
+
+## 8. Comparison of the Two Architectures
+
+| Question | Architecture A (mapping templates) | Architecture B (proxy + adapter) |
+|---|---|---|
+| API Gateway configuration (exported OpenAPI) | 206 lines / 6,524 bytes | 122 lines / 3,473 bytes |
+| Java infrastructure code | None | `OrdersApiHandler` (144 lines) + 3 dependencies + shade plugin |
+| Local testing of HTTP behavior | Not possible; requires deployment | Full, with `mvn test` (13 adapter tests) |
+| Where status codes are defined | API Gateway integration responses | Java adapter |
+| Lambdas | One per operation (3) | One for the whole API |
+
+### 1. Which approach required more API Gateway configuration?
+**A.** Each of the three methods needed a request mapping template, plus one method
+response and one integration response (with its own regex and body template) for every
+status code it could return. The exported definition is **206 lines (6,524 bytes) for A
+versus 122 lines (3,473 bytes) for B**, so A needed roughly 1.7 times more lines and 1.9
+times more bytes. In B each method is created once with proxy integration enabled and
+nothing else has to be configured: API Gateway no longer interprets the request or the
+response. The remaining 122 lines of B are mostly per-method boilerplate (resources,
+methods, Lambda integration), not behavior.
+
+### 2. Which approach required more Java infrastructure code?
+**B.** A required no infrastructure Java at all, since plain methods of `OrderService`
+were used as handlers. B required `OrdersApiHandler` (144 lines), the AWS events library,
+Gson and the shade plugin, plus a 190-line test class. The effort moved from
+configuration to code.
+
+### 3. Which was easier to test locally?
+**B.** Status codes, error documents, the `Location` header, null query parameters,
+malformed JSON and the 500-without-leaking behavior are all verified by 13 JUnit tests
+that run with `mvn test` and no AWS account. In A, only the application logic can be tested
+locally; the templates and regexes can only be exercised against API Gateway. The console
+test tool helps, but it is manual and cannot run in a build pipeline.
+
+### 4. Where are HTTP status codes defined in each approach?
+**A:** in API Gateway integration responses; a regular expression is matched against the
+Lambda `errorMessage` and selects one of the declared method responses.
+**B:** in Java, in the adapter (`handleRequest` and the operation methods), as explicit and
+typed code: `catch (OrderNotFoundException e) → 404`.
+
+### 5. What happens if the API grows from 3 operations to 30?
+**A:** configuration grows linearly. The exported definition averages about 69 lines per
+operation (206 / 3), so 30 operations would be roughly 2,000 lines of repeated templates,
+regexes and response definitions to keep consistent by hand or generate with
+infrastructure-as-code (a rough extrapolation, since part of the file is shared
+boilerplate). Either 30 Lambdas are needed or a dispatching layer must be added, and
+because the regexes depend on message text, the risk of silent inconsistencies grows too.
+**B:** the API Gateway configuration also grows (about 41 lines per operation, 122 / 3),
+but the behavior does not live there. The adapter grows as code, which can be refactored
+(a route table, one handler per resource, a shared error translator), reviewed and tested.
+The risk is a "god handler" and one large Lambda (longer cold starts, shared permissions,
+larger blast radius), which can be mitigated by splitting the adapter per resource while
+keeping the same pattern.
+
+### 6. Which approach makes the Java business logic cleaner?
+**Neither changed it:** `OrderService`, the model and the exceptions are identical in both
+architectures and have no HTTP or AWS dependency. The difference is *where the HTTP
+complexity lives*: in API Gateway configuration (A) or in a separate adapter (B). A subtle
+point in favor of B: in A the exception **messages** became part of the API behavior
+(rewording `does not exist` would silently turn a 404 into a 500), so the logic is
+indirectly coupled to the gateway configuration. In B the coupling is on exception
+**types**, checked by the compiler and by tests.
+
+### 7. Which approach would be easier for another developer to understand?
+**B.** Behavior can be read in one class, followed with a debugger and understood through
+its tests. In A the behavior is spread across the Java code, VTL templates and regular
+expressions stored in the AWS console, and understanding it means clicking through
+several tabs per method. B does require knowing the proxy event format.
+
+### 8. Which approach would you choose for a larger system? Why?
+**B (proxy integration with a thin adapter), managed with infrastructure-as-code.**
+Reasons: its behavior is testable without deploying, versioned and reviewable in Git,
+expressive enough for things A could not do easily (the `Location` header), and its error
+mapping depends on types instead of strings. The price is more Java code and coupling of the
+function to the event format, which a thin adapter keeps contained.
+A remains reasonable when the backend cannot be modified, when a simple transformation is
+enough, or for small integrations that will not grow.
+
 
