@@ -400,4 +400,68 @@ function to the event format, which a thin adapter keeps contained.
 A remains reasonable when the backend cannot be modified, when a simple transformation is
 enough, or for small integrations that will not grow.
 
+## 9. Final Challenge — DELETE /orders/{id}
 
+The prediction was written and committed **before** the implementation
+(see `docs/prediction-delete.md` and the git history).
+
+### AI assistant's proposal
+Before writing code, the assistant proposed: a new `deleteOrder` operation in `OrderService`
+(returning `void` and throwing `OrderNotFoundException` for a missing order, like `getOrder`),
+a new route in `OrdersApiHandler` returning `204`, no change to the model or the exceptions,
+no new Lambda, and a new `DELETE` method in API Gateway. DELETE was added only to
+Architecture B, which is the final API.
+
+### Prediction vs. reality
+
+| # | Question | My prediction | What was needed | Result |
+|---|---|---|---|---|
+| 1 | Java classes that change | `OrdersApiHandler`, `OrderService` | `OrdersApiHandler` and `OrderService`; `Order` did not change | Correct |
+| 2 | New Lambda? | No | No | Correct |
+| 3 | API Gateway change? | Create a `DELETE` method and redeploy | Same; additionally the Lambda package had to be redeployed with the new code | Correct, with one omission |
+| 4 | Where does the deletion logic reside? | In the handler and the service | In `OrderService.deleteOrder`; the handler only translates | Incorrect |
+| 5 | Where is 204 vs 404 decided? | In the handler | The handler decides the status code; the service only reports *whether* the order exists | Correct, with a nuance |
+| 6 | Tests | (drafted with the assistant) | Service tests, adapter tests, manual API checks | Matched |
+
+### Analysis of the differences
+
+**Question 1 — `Order`.** I expected the model to change, but deleting an order needs no new
+state or behavior in `Order`. The collection is owned by the service, so removing an item is
+a change to the collection, not to the item. I could not name a concrete change when I
+wrote the prediction, which was a sign that the prediction was weak there.
+
+**Question 4 — the most important mistake.** My prediction was internally inconsistent: I
+said `OrderService` would change (question 1) but that the deletion logic would live in the
+handler (question 4). The orders collection is a private field of `OrderService`; the handler
+cannot remove an item from it unless the service offers an operation to do so. Deleting is
+business logic, so it belongs in the service, and the handler only wires HTTP to it. I had
+confused *invoking* the operation (adapter) with *performing* it (application).
+
+**Question 5 — a nuance.** I was right that the status code belongs to the handler. What I
+had not distinguished is the two separate decisions hidden in "204 or 404":
+*does the order exist?* is a business fact decided by the service (it throws
+`OrderNotFoundException`), and *which number represents that fact* is decided by the adapter.
+The existing translation table already covered the 404; only the 204 had to be written.
+
+**Question 3 — the omission.** I did not consider that the Lambda code itself had to be
+redeployed. With the old package, `DELETE` reached the function but returned
+`ROUTE_NOT_FOUND`. Configuration (API Gateway) and code (Lambda package) are two separate
+deployment steps.
+
+### Conclusion
+The change touched exactly one business class (`OrderService`) and one adapter class
+(`OrdersApiHandler`), and required one new API Gateway method. The central expectation of
+the workshop held: adding an operation did not require touching the domain exceptions, the
+model or the existing routes, because responsibilities were already separated. Doing the same
+in Architecture A would have required a fourth Lambda, a new method with a request template,
+and three response definitions with their regular expressions.
+
+### Evidence
+**204 No Content (existing order)**
+![DELETE 204](docs/images/4.1.delete-204.png)
+
+**404 Not Found (non-existent order)**
+![DELETE 404](docs/images/4.2.delete-404.png)
+
+**Deleted order is no longer retrievable**
+![DELETE then GET](docs/images/4.3.delete-then-get-404.png)
