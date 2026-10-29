@@ -465,3 +465,212 @@ and three response definitions with their regular expressions.
 
 **Deleted order is no longer retrievable**
 ![DELETE then GET](docs/images/4.3.delete-then-get-404.png)
+## 10. Critique of the AI Assistant's Decisions
+
+### Decision 1 — One Lambda per operation, using plain `OrderService` methods as handlers (Architecture A)
+
+**Decision made by the agent:** Deploy three functions from the same JAR, with handlers
+`OrderService::createOrder`, `::getOrder` and `::getOrdersByCustomer`, and let API Gateway
+send single values (`{id}`, `customerId`) as plain JSON strings. No Java was changed.
+
+**Why do you think it proposed this?** The workshop says not to redesign the application
+for Lambda. API Gateway already performs routing, so a dispatcher in Java looked
+unnecessary, and plain methods avoid any AWS dependency. Using strings avoided creating
+request classes that would exist only because of the infrastructure.
+
+**Do you agree with it?** Mostly, for Architecture A: it kept the domain untouched and made
+the real cost of A visible. But it had two weaknesses. First, the agent first said
+`getOrder(String)` "would not fit" Lambda directly, then had to correct itself: it was an
+overstatement that I had to verify. Second, it silently created a correctness issue: each
+function has its own in-memory `OrderService`, so an order created with `POST` is invisible to
+`GET`. The agent disclosed it, but only as a side note after choosing the design.
+
+**What alternative could have been used?** One Lambda for the whole API with an
+`operation` field and a small dispatcher class, or request-wrapper objects such as
+`{"id": "ORD-42"}` (the example in the workshop), or an external store (e.g. DynamoDB) so
+that state does not depend on the function instance.
+
+**What did you finally implement and why?** The proposal as it was, with the limitation
+documented and read demos done on the pre-loaded orders. Accepting it made the contrast with
+Architecture B (one function, shared state) visible, which is what the comparison needed.
+
+### Decision 2 — Mapping errors with regular expressions over exception messages (Architecture A)
+
+**Decision made by the agent:** Translate domain exceptions into HTTP codes inside API
+Gateway, with "Lambda error regex" patterns matched against `errorMessage`
+(`.*does not exist.*` → 404, `.*(must not be blank|...).*` → 400, `(\n|.)+` → 500),
+leaving the exception messages unchanged.
+
+**Why do you think it proposed this?** It keeps the Java code free of any gateway concern,
+and this is how non-proxy integrations work: API Gateway can only inspect the
+`errorMessage` field of a Lambda error.
+
+**Do you agree with it?** Partially. It is the faithful way to demonstrate Architecture A,
+and it avoided putting gateway concerns in the domain. I would not use it in production:
+the wording of an exception becomes an invisible contract (rewording `does not exist` would
+turn a 404 into a 500, with no compiler or test failing). It also depended on the catch-all
+500 pattern not overriding the specific ones, which the agent itself said had to be
+verified empirically; it worked in my tests, but it cannot be unit tested. Finally, JSON
+conversion errors (`quantity: "abc"`) fall outside the patterns and surface as 500.
+
+**What alternative could have been used?** Prefix messages with a stable code (for example
+`[ORDER_NOT_FOUND]`), which makes the coupling explicit, or avoid gateway-level mapping
+altogether and translate exceptions in an adapter, which is Architecture B.
+
+**What did you finally implement and why?** The regexes over the existing messages.
+Changing the domain messages would have moved gateway concerns into the domain, and the
+fragility is itself evidence for Checkpoint 3 and for comparison question 6.
+
+### Decision 3 — Sequential order ids from a counter starting at 42
+
+**Decision made by the agent:** Generate ids with an `AtomicInteger` initialized to 42, so
+the first created order is `ORD-43`.
+
+**Why do you think it proposed this?** To match the example in the workshop statement
+(`ORD-43`), keep the tests deterministic and avoid needing any persistence.
+
+**Do you agree with it?** No, not as a design: it was chosen to match an example, not for
+correctness. The counter lives in one function instance, so when Lambda scales out two
+execution environments can both create `ORD-43` (no uniqueness guarantee). Sequential ids
+are also guessable, which makes enumerating other customers' orders trivial. That would be an
+insecure direct object reference once real data and authentication exist. The tests also
+depend on a hard-coded number.
+
+**What alternative could have been used?** Random identifiers (`ORD-` plus a short UUID), or
+ids issued by a persistent store (for example DynamoDB conditional writes), injecting an
+`IdGenerator` interface so that tests stay deterministic.
+
+**What did you finally implement and why?** The counter as proposed. The workshop states
+that in-memory data is only for the exercise and its examples use sequential ids, so I
+accepted the limitation and documented that it would not survive real use.
+
+## 11. Unexpected Internal Errors
+
+**Failures inside our code.** `OrdersApiHandler.handleRequest` catches any exception that is
+not a known domain or parsing error and returns `500` with the contract's error document and
+a generic message (`INTERNAL_ERROR` / `Unexpected error`). The stack trace is written to
+CloudWatch Logs and is never sent to the client. This is verified by the tests
+`unexpectedFailure_returns500WithoutLeakingDetails` and
+`deleteOrder_unexpectedFailure_returns500WithoutLeakingDetails`.
+
+**Failures outside our code** (function timeout, out-of-memory, initialization failure,
+malformed response). The handler never gets to build a response, so API Gateway answers by
+itself with `502` (or `504` on integration timeout) and its own body
+`{"message": "Internal server error"}`. This does **not** follow our error document.
+Possible improvement: customize API Gateway *Gateway Responses* so that these cases also
+return `{"error": "INTERNAL_ERROR", "message": ...}`.
+
+**Related observation:** requests to a path or method that is not defined in API Gateway are
+rejected before reaching Lambda with `403 {"message": "Missing Authentication Token"}`, again
+outside our error format.
+
+## 12. Final API
+
+| Operation | Request | Success | Errors |
+|---|---|---|---|
+| Create order | `POST /orders` | `201 Created` + order | `400 INVALID_REQUEST`, `500` |
+| Get order | `GET /orders/{id}` | `200 OK` + order | `404 ORDER_NOT_FOUND`, `500` |
+| Find orders | `GET /orders?customerId={id}` | `200 OK` + array (`[]` if none) | `400 INVALID_REQUEST`, `500` |
+| Delete order | `DELETE /orders/{id}` | `204 No Content` (no body) | `404 ORDER_NOT_FOUND`, `500` |
+
+All five required status codes are demonstrated: 200, 201, 204, 400 and 404.
+
+### Example requests and responses
+
+**GET existing order**
+GET /orders/ORD-42  →  200
+{"id":"ORD-42","customerId":"CUST-7","product":"Keyboard","quantity":2}
+
+**GET missing order**
+GET /orders/ORD-999  →  404
+{"error":"ORDER_NOT_FOUND","message":"Order ORD-999 does not exist"}
+
+**Create order**
+POST /orders
+{"customerId":"CUST-42","product":"MacBook Air","quantity":1}
+→  201, Location: /dev/orders/ORD-43
+{"id":"ORD-43","customerId":"CUST-42","product":"MacBook Air","quantity":1}
+
+**Invalid input**
+POST /orders  {"customerId":"CUST-42","product":"MacBook Air","quantity":0}
+→  400
+{"error":"INVALID_REQUEST","message":"quantity must be greater than 0"}
+
+**Search**
+GET /orders?customerId=CUST-42   →  200  [ {...} ]
+GET /orders?customerId=CUST-100  →  200  []
+GET /orders                      →  400  INVALID_REQUEST
+
+**Delete**
+DELETE /orders/ORD-42   →  204 (no body)
+DELETE /orders/ORD-999  →  404 ORDER_NOT_FOUND
+
+## 13. Final Architecture
+
+```mermaid
+flowchart LR
+    Client["Client<br/>(curl / browser)"]
+
+    subgraph AWS["AWS-managed services"]
+        APIGW["API Gateway (REST API)<br/>Lambda proxy integration<br/>routing and forwarding"]
+        RT["AWS Lambda<br/>Java 17 runtime"]
+    end
+
+    subgraph JAR["Our JAR (orders-api)"]
+        subgraph ADAPTER["Depends on AWS + Gson"]
+            H["OrdersApiHandler<br/>HTTP adapter<br/>status codes, headers, JSON"]
+        end
+        subgraph PLAIN["Plain Java: no AWS, no HTTP"]
+            S["OrderService<br/>application logic"]
+            M["Order, CreateOrderRequest<br/>OrderNotFoundException<br/>InvalidOrderException"]
+        end
+    end
+
+    Client -->|"HTTPS request"| APIGW
+    APIGW -->|"proxy event (JSON)"| RT
+    RT -->|"APIGatewayProxyRequestEvent"| H
+    H -->|"Java method calls"| S
+    S --- M
+    S -->|"Order or domain exception"| H
+    H -->|"APIGatewayProxyResponseEvent"| RT
+    RT -->|"statusCode, headers, body"| APIGW
+    APIGW -->|"HTTPS response"| Client
+```
+
+| Component | Depends on AWS? | Knows HTTP? |
+|---|---|---|
+| API Gateway, Lambda runtime | Yes (managed) | Yes (API Gateway only routes and forwards) |
+| `OrdersApiHandler` | Yes (events library) | Yes: status codes, headers, serialization |
+| `OrderService`, model, exceptions | **No** | **No** |
+
+## 14. Build, Test and Deploy
+
+**Requirements:** JDK 17, Maven 3.x, an AWS account with Lambda and API Gateway.
+
+**Build and test**
+mvn test
+mvn package        # produces target/orders-api-1.0.0.jar (includes dependencies via shade)
+
+**Lambda (final architecture)**
+| Setting | Value |
+|---|---|
+| Function | `orders-api-proxy` |
+| Runtime | Java 17 |
+| Handler | `edu.eci.tdse.orders.lambda.OrdersApiHandler::handleRequest` |
+| Package | `target/orders-api-1.0.0.jar` |
+| Memory / timeout | 512 MB / 15 s |
+
+**API Gateway (REST API `orders-api-proxy`)**
+1. Create resources `/orders` and `/orders/{id}`.
+2. Create methods with **Lambda proxy integration** enabled, all pointing to `orders-api-proxy`:
+   `GET` and `POST` on `/orders`; `GET` and `DELETE` on `/orders/{id}`.
+3. Deploy to a stage named `dev`.
+
+The exported definition is in `docs/api-gateway/architecture-b-openapi.json`
+(Architecture A: `architecture-a-openapi.json`). When importing it into another account,
+replace the account id, region and Lambda ARN in the `x-amazon-apigateway-integration`
+sections, and grant API Gateway permission to invoke the function.
+
+**Architecture A** (mapping templates) uses three functions with handlers
+`OrderService::createOrder`, `::getOrder` and `::getOrdersByCustomer`; the templates and
+response mappings are described in section 5 and in its OpenAPI export.
