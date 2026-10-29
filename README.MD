@@ -6,9 +6,21 @@
 
 ---
 
-## Project title and description
+## Orders API — Serverless REST API with AWS Lambda and API Gateway
 
-[TO DO: Fill in your project title and description here]
+This project is a small Order Management API built with Java 17, Maven, JUnit, AWS Lambda
+and Amazon API Gateway. It supports creating, retrieving, searching and deleting orders
+(`POST /orders`, `GET /orders/{id}`, `GET /orders?customerId=`, `DELETE /orders/{id}`).
+
+The goal is not just a working endpoint, but a deliberate answer to one question: **where
+should each responsibility live?** The same business logic (plain Java, with no HTTP or AWS
+dependency) is exposed through two architectures: **A**, where API Gateway transforms
+requests and maps errors using mapping templates, and **B**, where Lambda proxy integration
+delegates HTTP handling to a thin Java adapter. Both are compared with measured evidence.
+
+The repository also documents the API contract, local tests, an architecture diagram, a
+prediction-versus-reality analysis of the final DELETE challenge, and a critical evaluation
+of the decisions proposed by the AI assistant used during development.
 
 ---
 
