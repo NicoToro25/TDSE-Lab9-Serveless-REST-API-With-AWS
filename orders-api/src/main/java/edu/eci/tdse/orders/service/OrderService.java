@@ -13,68 +13,72 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class OrderService {
 
-    private final Map<String, Order> orders = new ConcurrentHashMap<>();
-    private final AtomicInteger sequence = new AtomicInteger(42);
+	private final Map<String, Order> orders = new ConcurrentHashMap<>();
+	private final AtomicInteger sequence = new AtomicInteger(42);
 
-    public OrderService() {
-        // Predefined data (in-memory only, NOT persistent storage)
-        save(new Order("ORD-001", "CUST-42", "MacBook Air", 1));
-        save(new Order("ORD-42", "CUST-7", "Keyboard", 2));
-    }
+	public OrderService() {
+		// Predefined data (in-memory only, NOT persistent storage)
+		save(new Order("ORD-001", "CUST-42", "MacBook Air", 1));
+		save(new Order("ORD-42", "CUST-7", "Keyboard", 2));
+	}
 
-    public Order createOrder(CreateOrderRequest request) {
-        validate(request);
-        String id = "ORD-" + sequence.incrementAndGet();
-        Order order = new Order(
-                id,
-                request.getCustomerId().trim(),
-                request.getProduct().trim(),
-                request.getQuantity());
-        save(order);
-        return order;
-    }
+	public Order createOrder(CreateOrderRequest request) {
+		validate(request);
+		String id = "ORD-" + sequence.incrementAndGet();
+		Order order = new Order(id, request.getCustomerId().trim(), request.getProduct().trim(), request.getQuantity());
+		save(order);
+		return order;
+	}
 
-    public Order getOrder(String id) {
-        if (isBlank(id)) {
-            throw new InvalidOrderException("Order id must not be blank");
-        }
-        Order order = orders.get(id);
-        if (order == null) {
-            throw new OrderNotFoundException(id);
-        }
-        return order;
-    }
+	public Order getOrder(String id) {
+		if (isBlank(id)) {
+			throw new InvalidOrderException("Order id must not be blank");
+		}
+		Order order = orders.get(id);
+		if (order == null) {
+			throw new OrderNotFoundException(id);
+		}
+		return order;
+	}
 
-    public List<Order> getOrdersByCustomer(String customerId) {
-        if (isBlank(customerId)) {
-            throw new InvalidOrderException("customerId must not be blank");
-        }
-        return orders.values().stream()
-                .filter(o -> o.getCustomerId().equals(customerId))
-                .sorted(Comparator.comparing(Order::getId))
-                .toList();
-    }
+	public List<Order> getOrdersByCustomer(String customerId) {
+		if (isBlank(customerId)) {
+			throw new InvalidOrderException("customerId must not be blank");
+		}
+		return orders.values().stream().filter(o -> o.getCustomerId().equals(customerId))
+				.sorted(Comparator.comparing(Order::getId)).toList();
+	}
 
-    private void validate(CreateOrderRequest request) {
-        if (request == null) {
-            throw new InvalidOrderException("Request must not be null");
-        }
-        if (isBlank(request.getCustomerId())) {
-            throw new InvalidOrderException("customerId must not be blank");
-        }
-        if (isBlank(request.getProduct())) {
-            throw new InvalidOrderException("product must not be blank");
-        }
-        if (request.getQuantity() <= 0) {
-            throw new InvalidOrderException("quantity must be greater than 0");
-        }
-    }
+	public void deleteOrder(String id) {
+		if (isBlank(id)) {
+			throw new InvalidOrderException("Order id must not be blank");
+		}
+		// remove() is atomic: no check-then-act race between two concurrent deletions
+		if (orders.remove(id) == null) {
+			throw new OrderNotFoundException(id);
+		}
+	}
 
-    private void save(Order order) {
-        orders.put(order.getId(), order);
-    }
+	private void validate(CreateOrderRequest request) {
+		if (request == null) {
+			throw new InvalidOrderException("Request must not be null");
+		}
+		if (isBlank(request.getCustomerId())) {
+			throw new InvalidOrderException("customerId must not be blank");
+		}
+		if (isBlank(request.getProduct())) {
+			throw new InvalidOrderException("product must not be blank");
+		}
+		if (request.getQuantity() <= 0) {
+			throw new InvalidOrderException("quantity must be greater than 0");
+		}
+	}
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
-    }
+	private void save(Order order) {
+		orders.put(order.getId(), order);
+	}
+
+	private boolean isBlank(String value) {
+		return value == null || value.isBlank();
+	}
 }

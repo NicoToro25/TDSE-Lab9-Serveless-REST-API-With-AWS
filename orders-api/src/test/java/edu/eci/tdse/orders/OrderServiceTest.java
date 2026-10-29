@@ -141,4 +141,50 @@ class OrderServiceTest {
 
         assertTrue(service.getOrdersByCustomer("CUST-77").isEmpty());
     }
+
+        // ---------- delete ----------
+
+    @Test
+    void deleteOrder_existing_removesIt() {
+        service.deleteOrder("ORD-42");
+
+        assertThrows(OrderNotFoundException.class, () -> service.getOrder("ORD-42"));
+    }
+
+    @Test
+    void deleteOrder_nonExisting_throwsOrderNotFound() {
+        OrderNotFoundException ex = assertThrows(OrderNotFoundException.class,
+                () -> service.deleteOrder("ORD-999"));
+
+        assertEquals("ORD-999", ex.getOrderId());
+    }
+
+    @Test
+    void deleteOrder_blankId_throwsInvalidOrder() {
+        assertThrows(InvalidOrderException.class, () -> service.deleteOrder(" "));
+        assertThrows(InvalidOrderException.class, () -> service.deleteOrder(null));
+    }
+
+    @Test
+    void deleteOrder_twice_secondAttemptFails() {
+        service.deleteOrder("ORD-42");
+
+        assertThrows(OrderNotFoundException.class, () -> service.deleteOrder("ORD-42"));
+    }
+
+    @Test
+    void deleteOrder_removesItFromCustomerSearch() {
+        service.deleteOrder("ORD-001");
+
+        assertTrue(service.getOrdersByCustomer("CUST-42").isEmpty());
+    }
+
+    @Test
+    void deleteOrder_createdOrder_canBeDeleted() {
+        Order created = service.createOrder(new CreateOrderRequest("CUST-5", "Mouse", 1));
+
+        service.deleteOrder(created.getId());
+
+        assertThrows(OrderNotFoundException.class, () -> service.getOrder(created.getId()));
+    }
 }
